@@ -86,6 +86,7 @@ def registerVendor(request):
         messages.warning(request, 'You are already logged in')
         return redirect('myAccount')
     elif request.method == 'POST':
+
         # store the data and create the user 
         form = UserForm(request.POST)
         v_form = VendorForm(request.POST, request.FILES)
@@ -106,6 +107,7 @@ def registerVendor(request):
             vendor.user_profile = user_profile  # vendor user profile to connect the vendor 
             vendor.save()
             
+            # Send verification email
             mail_subject = 'Please Activate your account'
             email_template = 'accounts/emails/account_verification_email.html'
             send_verification_email(request, user, mail_subject, email_template)  # send verification email
@@ -154,7 +156,7 @@ def activate(request, uidb64, token):
 
 
 
-# @requires_csrf_token
+@requires_csrf_token
 def login(request):
     if request.user.is_authenticated: # user is already logged in or not 
         messages.warning(request , 'You are already logged in')
