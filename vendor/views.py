@@ -7,3 +7,7 @@ from django.shortcuts import render
 # def get_vendor(request):
 #     vendor = Vendor.objects.get(user=request.user)
 #     return vendor
+
+
+def viewprofile(request):
+    return render(request, 'vendor/viewprofile.html')

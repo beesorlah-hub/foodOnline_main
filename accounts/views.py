@@ -11,6 +11,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.text import slugify
 from django.views.decorators.csrf import requires_csrf_token
+from vendor.models import Vendor
 
 # Create your views here.
 
