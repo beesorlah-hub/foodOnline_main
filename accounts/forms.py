@@ -1,6 +1,6 @@
 from django import forms
 from .models import User, UserProfile
-# from .validators import allow_only_images_validator
+from .validators import allow_only_images_validator
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -25,17 +25,23 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Start typing...', 'required': 'required'}))
-    profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class':'btn-btn-info'}))
-    cover_photo = forms.FileField(widget=forms.FileInput(attrs={'class':'btn-btn-info'}))
     
+    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Start typing...', 'required': 'required'}))
+    profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class':'btn btn-info'}), validators=[allow_only_images_validator])
+    cover_photo = forms.FileField(widget=forms.FileInput(attrs={'class':'btn btn-info'}), validators=[allow_only_images_validator])
+    
+    # latitude = forms.FileField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    # longtitude = forms.FileField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
+
+
     class Meta:
         model = UserProfile
-        fields = ['profile_picture', 'cover_photo', 'address', 'country', 'state', 'pin_code', 'latitude', 'longitude', 'city']
+        fields = ['profile_picture', 'cover_photo', 'address', 'country', 'state', 'pin_code', 'latitude', 'longtitude', 'city']
 
-#     def __init__(self, *args, **kwargs):
-#         super(UserProfileForm, self).__init__(*args, **kwargs)
-#         for field in self.fields:
-#             if field == 'latitude' or field == 'longitude':
-#                 self.fields[field].widget.attrs['readonly'] = 'readonly'
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            if field == 'latitude' or field == 'longtitude':
+                self.fields[field].widget.attrs['readonly'] = 'readonly'
 
